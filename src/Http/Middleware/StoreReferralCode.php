@@ -27,11 +27,11 @@ class StoreReferralCode {
                 if(!empty($program)) {
                     return redirect($request->url())->cookie('ref', $referral->id, $program->lifetime_minutes);
                 } else {
-                    \Log::warn('Referral Program not found where request.ref equals '.$request->has('ref'));
+                    \Log::warn('Referral Program not found where request.ref equals '.$request->get('ref'));
                 }
 
             } else {
-                \Log::warn('Referral Ref code not found where request.ref equals '.$request->has('ref'));
+                \Log::warn('Referral Ref code not found where request.ref equals '.$request->get('ref'));
             }
         }
 
