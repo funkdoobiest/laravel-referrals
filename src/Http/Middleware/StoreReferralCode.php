@@ -15,12 +15,21 @@ class StoreReferralCode {
     public function handle(Request $request, \Closure $next)
     {
         if ($request->has('ref')){
+
             /** @var ReferralLink $referral */
             $referral = ReferralLink::whereCode($request->get('ref'))->first();
-            /** @var ReferralProgram $program */
-            $program = $referral->program()->first();
+
             if (!empty($referral)) {
-                return redirect($request->url())->cookie('ref', $referral->id, $program->lifetime_minutes);
+
+                /** @var ReferralProgram $program */
+                $program = $referral->program()->first();
+
+                if(!empty($program)) {
+                    return redirect($request->url())->cookie('ref', $referral->id, $program->lifetime_minutes);
+                } else {
+                    \Log::warn('Referral Program not found where request.ref equals '.$request->has('ref'));
+                }
+
             } else {
                 \Log::warn('Referral Ref code not found where request.ref equals '.$request->has('ref'));
             }

@@ -25,7 +25,27 @@ class ReferralLink extends Model
 
     private function generateCode()
     {
-        $this->code = (string) Uuid::uuid1();
+        $this->code = $this->getUniqueCode();
+    }
+
+    private function getUniqueCode()
+    {
+        $code = $this->generateString();
+
+        while (self::codeExists($code) === TRUE)
+            $code = $this->generateString();
+
+        return $code;
+    }
+
+    private function generateString()
+    {
+        return strtoupper(Str::random(10));
+    }
+
+    public static function codeExists($code)
+    {
+        return self::where('code', $code)->exists();
     }
 
     public static function getReferral($user, $program)
