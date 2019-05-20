@@ -3,7 +3,7 @@
 namespace Pdazcom\Referrals\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
 /**
  * Class ReferralLink
